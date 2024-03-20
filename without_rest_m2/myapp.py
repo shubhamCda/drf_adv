@@ -19,11 +19,11 @@ ENDPOINT = "api/"
 
 def create_resource():
     new_std = {
-        'name':'Dhoni',
-        'rollno': 114,
-        'marks': 45,
-        'gf': 'Sakshi',
-        'bf': 'Mahendra'
+        'name':'Mangalam',
+        'rollno': 115,
+        'marks': 35,
+        'gf': 'Kirti',
+        'bf': 'Shubham'
     }
     r=requests.post(BASE_URL+ENDPOINT, json=new_std)
     print(r.status_code)

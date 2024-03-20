@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import render
 from django.views.generic import View
+from .forms import StudentForm
 from .models import Student
 from .utils import get_object_by_id, is_json
 from .mixins import HttpResponseMixin, SerializeMixin
@@ -37,6 +38,13 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
         valid_json = is_json(data)
         if not valid_json:
             return self.render_to_http_response(json.dumps({'msg':'Please send the valid json data.'}))
-        std_data = json.load(data)
+        std_data = json.loads(data)
+        form=StudentForm(std_data)
+        if form.is_valid():
+            form.save()
+            return  self.render_to_http_response(json.dumps({'msg':'Resource saved successfully...'}))
+        if form.errors:
+            json_data = json.dumps(form.errors)
+            return self.render_to_http_response(json_data,status=400)
         
 
