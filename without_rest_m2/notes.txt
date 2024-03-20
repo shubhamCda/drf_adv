@@ -1,0 +1,4 @@
+* py manage.py dumpdata api.Student --format json --indent 4 
+ --> to get all the entries of data from database in JSON format
+
+ 

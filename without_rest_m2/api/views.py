@@ -46,5 +46,33 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
         if form.errors:
             json_data = json.dumps(form.errors)
             return self.render_to_http_response(json_data,status=400)
+    
+    def put(self,request,*args,**kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            return self.render_to_http_response(json.dumps({'msg':'Please enter the valid JSON data..'}))
+        p_data = json.loads(data)
+        id = p_data.get('id', None)
+        if id is None:
+            return self.render_to_http_response(json.dumps({'msg':'Missing argument: `id`.'}))
+        std = get_object_by_id(id)
+        if std is None:
+            return self.render_to_http_response(json.dumps({'msg': 'Invalid student ID.'}), status=404)
         
+        original_data = {
+            'name':std.name,
+            'rollno':std.rollno,
+            'marks':std.marks,
+            'gf':std.gf,
+            'bf':std.bf,
+        }
+        original_data.update(p_data)
+        form=StudentForm(original_data, instance=std)
+        if form.is_valid():
+            form.save(commit=True)
+            return self.render_to_http_response(json.dumps({'msg':'Student updated Successfully...'}))
+        if form.errors:
+            json_data = json.dumps(form.errors)
+            return self.render_to_http_response(json_data, status=400)
 
