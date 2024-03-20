@@ -33,14 +33,26 @@ ENDPOINT = "api/"
 # create_resource()
 
 
-#  PUT (Update Request)
-def update_student():
-    new_data = {
-        'id':id,
-        'gf': 'Sonu',
+# #  PUT (Update Request)
+# def update_student(id):
+#     new_data = {
+#         'id':id,
+#         'marks': 60,
+#         'gf': 'Kajal',
+#     }
+#     r = requests.put(BASE_URL + ENDPOINT, json=new_data)
+#     print(r.status_code)
+#     print(r.json())
+# update_student(3)
+    
+    
+# DELETE method
+def delete_student(id):
+    data={
+        "id": id
     }
-    r = requests.put(BASE_URL + ENDPOINT, json=new_data)
+    r = requests.delete(BASE_URL+ENDPOINT, json=data)
     print(r.status_code)
     print(r.json())
-update_student(1)
     
+delete_student(9)

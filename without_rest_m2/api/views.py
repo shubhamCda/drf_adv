@@ -75,4 +75,24 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
         if form.errors:
             json_data = json.dumps(form.errors)
             return self.render_to_http_response(json_data, status=400)
+        
+    
+    def delete(self,request,*args,**kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            return self.render_to_http_response(json.dumps({'msg':'No Data in Json format.'}))
+        p_data = json.loads(data)
+        id  = p_data.get("id",None)
+        if id is None:
+            return self.render_to_http_response(json.dumps({'msg':'To delete the entry ID must be required....'}))
+        std = get_object_by_id(id)
+        if std is None:
+            return self.render_to_http_response(json.dumps({"error":"Record does not exist"}),status=400)
+        status, deleted_item =std.delete()
+        if status==1:
+            json_data = json.dumps({'msg':'Resource deleted successfully...'})
+            return self.render_to_http_response(json_data)
+        json_data = json.dumps({'msg':'Unable to delete plz try again...'})
+        return self.render_to_http_response(json_data,status=500)
 
