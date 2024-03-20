@@ -31,3 +31,12 @@ class StudentCRUDCBV(HttpResponseMixin, SerializeMixin, View):
         qs = Student.objects.all()
         json_data = self.serialize(qs)
         return self.render_to_http_response(json_data)
+    
+    def post(self,request, *args, **kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            return self.render_to_http_response(json.dumps({'msg':'Please send the valid json data.'}))
+        std_data = json.load(data)
+        
+
