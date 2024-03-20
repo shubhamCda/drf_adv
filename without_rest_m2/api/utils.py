@@ -11,9 +11,9 @@ def is_json(data):
         valid=False
     return valid
 
-def get_object_by_id(self, id):
+def get_object_by_id(id):
     try:
         s = Student.objects.get(id=id)
     except Student.DoesNotExist:
-        return None
+        s = None
     return s
